@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Story - Parkinsonism & Dementias Initiative</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        cursor: none;
+        background: #f5ede3;
+        color: #3d2f24;
+        overflow-x: hidden;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 60px;
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .nav-logo {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #5d4037;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+
+      .nav-logo:hover {
+        opacity: 0.7;
+      }
+
+      .back-btn {
+        padding: 12px 32px;
+        background: transparent;
+        color: #5d4037;
+        border: 2px solid #d4a574;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .back-btn:hover {
+        background: #d4a574;
+        color: #f5ede3;
+      }
+
+      .story-container {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 120px 40px 80px;
+      }
+
+      .story-box {
+        max-width: 800px;
+        width: 100%;
+        background: #fff;
+        padding: 80px;
+        border-radius: 8px;
+        box-shadow: 0 20px 60px rgba(93, 64, 55, 0.15);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .story-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #d4a574 0%, #c9935f 100%);
+      }
+
+      .story-header {
+        margin-bottom: 50px;
+        text-align: center;
+      }
+
+      .story-header h2 {
+        font-size: 52px;
+        color: #5d4037;
+        margin-bottom: 24px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
+
+      .story-header .accent-line {
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, #d4a574 0%, #c9935f 100%);
+        margin: 0 auto 30px;
+        border-radius: 2px;
+      }
+
+      .story-text {
+        font-size: 18px;
+        line-height: 1.9;
+        color: #6d5d52;
+        font-weight: 400;
+        letter-spacing: 0.3px;
+      }
+
+      .story-text::first-letter {
+        font-size: 72px;
+        font-weight: 700;
+        color: #d4a574;
+        line-height: 1;
+        margin-right: 8px;
+        float: left;
+        margin-top: 6px;
+      }
+
+      .story-footer {
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 2px solid #ebe6de;
+        text-align: center;
+      }
+
+      .story-footer p {
+        font-size: 14px;
+        color: #8d6e63;
+        font-style: italic;
+      }
+
+      .cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        will-change: top, left;
+        z-index: 10000;
+      }
+
+      .big {
+        background: #8b5e3c;
+        width: 24px;
+        height: 24px;
+        border: 1px solid rgba(139, 94, 60, 0.4);
+        transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
+        box-shadow: 0 0 18px rgba(139, 94, 60, 0.3);
+      }
+
+      .small {
+        background: #f1c27d;
+        width: 12px;
+        height: 12px;
+        border: 1px solid rgba(241, 194, 125, 0.4);
+        transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
+        box-shadow: 0 0 12px rgba(241, 194, 125, 0.3);
+      }
+
+      .big.hover {
+        width: 56px;
+        height: 56px;
+        background: #d6ad60;
+      }
+
+      .small.hover {
+        width: 14px;
+        height: 14px;
+        background: #c4a484;
+      }
+
+      @media (max-width: 768px) {
+        .story-box {
+          padding: 50px 30px;
+        }
+
+        .story-header h2 {
+          font-size: 36px;
+        }
+
+        .story-text {
+          font-size: 16px;
+          line-height: 1.8;
+        }
+
+        .navbar {
+          padding: 20px 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo" onclick="window.location.href='index.html'">Neuro</div>
+      <button class="back-btn" onclick="window.location.href='index.html'">← BACK HOME</button>
+    </nav>
+
+    <div class="story-container">
+      <div class="story-box">
+        <div class="story-header">
+          <h2>Our Story</h2>
+          <div class="accent-line"></div>
+        </div>
+        <p class="story-text">
+          Created from an assignment, becoming a passion, Parkinsonism and Dementias Initiative is mainly here just for the spreading of awareness and helplines and research for diseases like parkinsons or alzheimers.
+        </p>
+        <div class="story-footer">
+          <p>Building hope through knowledge and community support</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cursor big"></div>
+    <div class="cursor small"></div>
+    <script>
+      const big = document.querySelector('.big');
+      const small = document.querySelector('.small');
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let bigX = mouseX;
+      let bigY = mouseY;
+      let smallX = mouseX;
+      let smallY = mouseY;
+
+      const lerp = (start, end, amount) => start + (end - start) * amount;
+
+      document.addEventListener('mousemove', (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+      });
+
+      function animate() {
+        bigX = lerp(bigX, mouseX, 0.14);
+        bigY = lerp(bigY, mouseY, 0.14);
+        smallX = lerp(smallX, mouseX, 0.24);
+        smallY = lerp(smallY, mouseY, 0.24);
+
+        big.style.top = bigY + 'px';
+        big.style.left = bigX + 'px';
+        small.style.top = smallY + 'px';
+        small.style.left = smallX + 'px';
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      const links = document.querySelectorAll('a, button, [onclick]');
+      links.forEach((link) => {
+        link.addEventListener('mouseenter', () => {
+          big.classList.add('hover');
+          small.classList.add('hover');
+        });
+
+        link.addEventListener('mouseleave', () => {
+          big.classList.remove('hover');
+          small.classList.remove('hover');
+        });
+      });
+    </script>
+  </body>
+</html>

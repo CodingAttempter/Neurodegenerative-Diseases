@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Volunteer - Parkinsonism & Dementias Initiative</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        cursor: none;
+        background: #f5ede3;
+        color: #3d2f24;
+        overflow-x: hidden;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 60px;
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .nav-logo {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #5d4037;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+
+      .nav-logo:hover {
+        opacity: 0.7;
+      }
+
+      .back-btn {
+        padding: 12px 32px;
+        background: transparent;
+        color: #5d4037;
+        border: 2px solid #d4a574;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .back-btn:hover {
+        background: #d4a574;
+        color: #f5ede3;
+      }
+
+      .volunteer-hero {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(135deg, #d4a574 0%, #c9935f 100%);
+        padding: 120px 40px;
+      }
+
+      .volunteer-hero h1 {
+        font-size: 64px;
+        color: #f5ede3;
+        margin-bottom: 24px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        max-width: 900px;
+      }
+
+      .volunteer-hero p {
+        font-size: 20px;
+        color: rgba(245, 237, 227, 0.95);
+        max-width: 700px;
+        line-height: 1.6;
+      }
+
+      .section {
+        padding: 120px 60px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 80px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .section-header h2 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        color: #5d4037;
+        letter-spacing: -0.5px;
+      }
+
+      .section-header p {
+        font-size: 18px;
+        color: #8d6e63;
+        line-height: 1.6;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 50px;
+        margin-top: 60px;
+      }
+
+      .card {
+        text-align: center;
+        padding: 40px;
+        background: #f9f6f1;
+        border-radius: 8px;
+        transition: all 0.3s;
+      }
+
+      .card:hover {
+        box-shadow: 0 10px 40px rgba(93, 64, 55, 0.1);
+        transform: translateY(-5px);
+      }
+
+      .card-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 32px;
+        background: linear-gradient(135deg, #d4a574 0%, #a68574 100%);
+        border-radius: 8px;
+      }
+
+      .card h3 {
+        font-size: 22px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        color: #5d4037;
+      }
+
+      .card p {
+        font-size: 15px;
+        color: #8d6e63;
+        line-height: 1.7;
+        margin-bottom: 20px;
+      }
+
+      .card-btn {
+        padding: 12px 32px;
+        background: #d4a574;
+        color: #f5ede3;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .card-btn:hover {
+        background: #c9935f;
+        transform: translateY(-2px);
+      }
+
+      .alt-bg {
+        background: #ebe6de;
+      }
+
+      .requirements {
+        background: #fff;
+        padding: 50px 40px;
+        border-radius: 8px;
+        border-left: 4px solid #d4a574;
+        margin-top: 60px;
+      }
+
+      .requirements h3 {
+        font-size: 24px;
+        margin-bottom: 24px;
+        color: #5d4037;
+        font-weight: 600;
+      }
+
+      .requirement-list {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .requirement-list li {
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+        color: #6d5d52;
+        line-height: 1.6;
+      }
+
+      .requirement-list li::before {
+        content: '✓';
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        background: #d4a574;
+        color: #f5ede3;
+        border-radius: 50%;
+        margin-right: 12px;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .cta-section {
+        background: #d4a574;
+        color: #f5ede3;
+        text-align: center;
+        padding: 80px 60px;
+        margin-top: 120px;
+        border-radius: 8px;
+      }
+
+      .cta-section h2 {
+        font-size: 48px;
+        margin-bottom: 24px;
+        font-weight: 600;
+      }
+
+      .cta-section p {
+        font-size: 18px;
+        margin-bottom: 40px;
+        line-height: 1.6;
+        opacity: 0.95;
+      }
+
+      .cta-btn {
+        padding: 16px 48px;
+        background: #f5ede3;
+        color: #5d4037;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .cta-btn:hover {
+        background: #fff;
+        transform: translateY(-1px);
+      }
+
+      .cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        will-change: top, left;
+        z-index: 10000;
+      }
+
+      .big {
+        background: #8b5e3c;
+        width: 24px;
+        height: 24px;
+        border: 1px solid rgba(139, 94, 60, 0.4);
+        transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
+        box-shadow: 0 0 18px rgba(139, 94, 60, 0.3);
+      }
+
+      .small {
+        background: #f1c27d;
+        width: 12px;
+        height: 12px;
+        border: 1px solid rgba(241, 194, 125, 0.4);
+        transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
+        box-shadow: 0 0 12px rgba(241, 194, 125, 0.3);
+      }
+
+      .big.hover {
+        width: 56px;
+        height: 56px;
+        background: #d6ad60;
+      }
+
+      .small.hover {
+        width: 14px;
+        height: 14px;
+        background: #c4a484;
+      }
+
+      .footer {
+        padding: 60px;
+        text-align: center;
+        color: #8d6e63;
+        font-size: 13px;
+        border-top: 1px solid rgba(139, 94, 60, 0.1);
+        background: #f5ede3;
+      }
+
+      #hospital-map {
+        width: 100%;
+        height: 500px;
+        border-radius: 8px;
+        margin-bottom: 80px;
+        box-shadow: 0 10px 40px rgba(93, 64, 55, 0.1);
+      }
+
+      .map-info {
+        background: #fff;
+        padding: 50px 40px;
+        border-radius: 8px;
+        border-left: 4px solid #d4a574;
+        margin-bottom: 80px;
+      }
+
+      .map-info h3 {
+        font-size: 24px;
+        margin-bottom: 24px;
+        color: #5d4037;
+        font-weight: 600;
+      }
+
+      .map-info p {
+        font-size: 16px;
+        color: #6d5d52;
+        line-height: 1.8;
+        margin-bottom: 16px;
+      }
+
+      .interactions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 50px;
+        margin-top: 60px;
+      }
+
+      .interaction-card {
+        background: #f9f6f1;
+        padding: 40px;
+        border-radius: 8px;
+        border-top: 3px solid #d4a574;
+      }
+
+      .interaction-card h3 {
+        font-size: 20px;
+        color: #5d4037;
+        margin-bottom: 16px;
+        font-weight: 600;
+      }
+
+      .interaction-card p {
+        font-size: 15px;
+        color: #8d6e63;
+        line-height: 1.7;
+      }
+
+      @media (max-width: 768px) {
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+
+        .requirement-list {
+          grid-template-columns: 1fr;
+        }
+
+        .volunteer-hero h1 {
+          font-size: 36px;
+        }
+
+        .section {
+          padding: 80px 30px;
+        }
+
+        .interactions-grid {
+          grid-template-columns: 1fr;
+        }
+
+        #hospital-map {
+          height: 400px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo" onclick="window.location.href='index.html'">Neuro</div>
+      <button class="back-btn" onclick="window.location.href='index.html'">← BACK HOME</button>
+    </nav>
+
+    <section class="volunteer-hero">
+      <h1>Find Volunteer Opportunities</h1>
+      <p>We help connect passionate individuals with volunteer opportunities at hospitals and care centers. Discover where you can make a meaningful impact in your community.</p>
+    </section>
+
+    <section class="section">
+      <div id="hospital-map" style="width: 100%; height: 500px; border-radius: 8px; box-shadow: 0 10px 40px rgba(93, 64, 55, 0.1); margin-bottom: 80px;"></div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 80px;">
+        <div style="text-align: center; padding: 40px; background: #f9f6f1; border-radius: 8px; border-top: 3px solid #d4a574;">
+          <div style="font-size: 48px; color: #d4a574; font-weight: 700; margin-bottom: 12px;">150M+</div>
+          <p style="font-size: 14px; color: #8d6e63; font-weight: 600;">Americans need care support</p>
+        </div>
+        <div style="text-align: center; padding: 40px; background: #f9f6f1; border-radius: 8px; border-top: 3px solid #d4a574;">
+          <div style="font-size: 48px; color: #d4a574; font-weight: 700; margin-bottom: 12px;">64K</div>
+          <p style="font-size: 14px; color: #8d6e63; font-weight: 600;">Long-term care facilities nationwide</p>
+        </div>
+        <div style="text-align: center; padding: 40px; background: #f9f6f1; border-radius: 8px; border-top: 3px solid #d4a574;">
+          <div style="font-size: 48px; color: #d4a574; font-weight: 700; margin-bottom: 12px;">50%</div>
+          <p style="font-size: 14px; color: #8d6e63; font-weight: 600;">Struggling with volunteer shortage - </p>
+        </div>
+        <div style="text-align: center; padding: 40px; background: #f9f6f1; border-radius: 8px; border-top: 3px solid #d4a574;">
+          <div style="font-size: 48px; color: #d4a574; font-weight: 700; margin-bottom: 12px;">25%</div>
+          <p style="font-size: 14px; color: #8d6e63; font-weight: 600;">US population volunteers - https://blogs.cdc.gov/nchs/2020/07/17/6988/</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Hospitals & Care Centers Near You</h2>
+        <p>Find long-term care facilities and hospitals in your area to volunteer with patients</p>
+      </div>
+      <div class="map-info">
+        <h3>Where to Volunteer</h3>
+        <p>We don't recruit volunteers directly. Instead, we point passionate individuals toward organizations and facilities that need volunteers. Use the resources below to find volunteer opportunities in your area:</p>
+        <p style="margin-top: 24px;"><strong>Medicare Care Compare</strong><br><a href="https://www.medicare.gov/care-compare/?guidedSearch=LongTermCare&providerType=LongTermCare" target="_blank" style="color: #d4a574; text-decoration: none;">Find Long-Term Care Hospitals & Facilities →</a></p>
+        <p style="margin-top: 20px;"><strong>National Volunteer Organizations:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 12px; list-style: disc;">
+          <li style="margin-bottom: 8px;"><a href="https://www.volunteermatch.org" target="_blank" style="color: #d4a574; text-decoration: none;">VolunteerMatch</a> - Find volunteering opportunities in your community</li>
+          <li style="margin-bottom: 8px;"><a href="https://www.alz.org" target="_blank" style="color: #d4a574; text-decoration: none;">Alzheimer's Association</a> - Volunteer with dementia research and support</li>
+          <li style="margin-bottom: 8px;"><a href="https://www.parkinson.org" target="_blank" style="color: #d4a574; text-decoration: none;">Parkinson's Foundation</a> - Volunteer opportunities and support services</li>
+          <li style="margin-bottom: 8px;"><a href="https://www.seniorcorps.gov" target="_blank" style="color: #d4a574; text-decoration: none;">Senior Corps</a> - Volunteer programs for seniors and with seniors</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="alt-bg section">
+      <div class="section-header">
+        <h2>What You'll Be Doing</h2>
+        <p>Meaningful work with real impact on patients and families</p>
+      </div>
+      <div class="interactions-grid">
+        <div class="interaction-card">
+          <h3>Supporting Patients</h3>
+          <p>You'll work directly with patients receiving treatment, offering emotional support, helping with daily tasks, and being a compassionate presence during medical appointments and therapy sessions.</p>
+        </div>
+        <div class="interaction-card">
+          <h3>Helping Families</h3>
+          <p>Connect with family members and caregivers who need guidance, resources, and someone to talk to. You'll help them navigate the challenges of managing neurodegenerative diseases.</p>
+        </div>
+        <div class="interaction-card">
+          <h3>Collaborating with Healthcare Teams</h3>
+          <p>Work alongside doctors, nurses, and specialists to understand patient needs and support their treatment plans. You'll be an important bridge between patients and medical professionals.</p>
+        </div>
+        <div class="interaction-card">
+          <h3>Spreading Awareness</h3>
+          <p>Educate hospital visitors and community members about Parkinsonism and Dementias, early warning signs, and prevention strategies to help more people seek early diagnosis and care.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt-bg section">
+      <div class="section-header">
+        <h2>Why Volunteer?</h2>
+        <p>Be part of a mission that changes lives</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon"></div>
+          <h3>Make a Difference</h3>
+          <p>Directly contribute to advancing research and awareness for diseases affecting millions globally.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h3>Learn & Grow</h3>
+          <p>Gain valuable experience and knowledge in neurodegenerative disease research and community support.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h3>Build Community</h3>
+          <p>Connect with like-minded individuals dedicated to improving the lives of patients and families.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="cta-section">
+        <h2>Ready to Make an Impact?</h2>
+        <p>Explore volunteer opportunities at hospitals and care centers that serve patients with neurodegenerative diseases</p>
+        <a href="https://www.medicare.gov/care-compare/?guidedSearch=LongTermCare&providerType=LongTermCare" target="_blank" style="text-decoration: none;"><button class="cta-btn">FIND OPPORTUNITIES</button></a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>&copy; 2026 Parkinsonism & Dementias Initiative. Every volunteer makes a difference.</p>
+    </footer>
+
+    <div class="cursor big"></div>
+    <div class="cursor small"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script>
+      // Initialize hospital map
+      const map = L.map('hospital-map').setView([39.8283, -98.5795], 4);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      // Major hospitals and care centers across the US
+      const hospitals = [
+        // Northeast
+        {name: 'Massachusetts General Hospital', coords: [42.3642, -71.0707], type: 'Major Hospital'},
+        {name: 'Hospital for Special Surgery', coords: [40.7679, -73.9577], type: 'Specialty Care'},
+        {name: 'Brigham and Women\'s Hospital', coords: [42.3344, -71.1057], type: 'Major Hospital'},
+        {name: 'Yale New Haven Hospital', coords: [41.2024, -72.9278], type: 'Major Hospital'},
+        
+        // Mid-Atlantic
+        {name: 'Johns Hopkins Hospital', coords: [39.2993, -76.5880], type: 'Major Hospital'},
+        {name: 'Penn Medicine - Philadelphia', coords: [39.9517, -75.1848], type: 'Major Hospital'},
+        {name: 'New York Presbyterian Hospital', coords: [40.8062, -73.9587], type: 'Major Hospital'},
+        {name: 'Mount Sinai Hospital', coords: [40.7948, -73.9548], type: 'Major Hospital'},
+        
+        // Southeast
+        {name: 'Duke University Medical Center', coords: [35.9980, -78.9348], type: 'Major Hospital'},
+        {name: 'Emory University Hospital', coords: [33.7490, -84.3880], type: 'Major Hospital'},
+        {name: 'Vanderbilt University Medical Center', coords: [36.1627, -86.7816], type: 'Major Hospital'},
+        {name: 'University of Florida Health', coords: [29.6436, -82.2225], type: 'Regional Hospital'},
+        {name: 'Medical University of South Carolina', coords: [32.7867, -80.0005], type: 'Regional Hospital'},
+        {name: 'UT Southwestern Medical Center', coords: [32.7555, -96.8000], type: 'Major Hospital'},
+        
+        // Midwest
+        {name: 'Mayo Clinic - Rochester', coords: [43.9667, -92.0333], type: 'Major Hospital'},
+        {name: 'University of Wisconsin Hospital', coords: [43.0629, -89.4124], type: 'Regional Hospital'},
+        {name: 'University of Michigan Medical Center', coords: [42.2480, -83.7430], type: 'Major Hospital'},
+        {name: 'Ohio State University Hospital', coords: [40.2741, -83.0074], type: 'Major Hospital'},
+        {name: 'Northwestern Medicine', coords: [41.8949, -87.6177], type: 'Major Hospital'},
+        {name: 'Indiana University Hospital', coords: [39.7580, -86.1549], type: 'Regional Hospital'},
+        
+        // Southwest
+        {name: 'University of Arizona Medical Center', coords: [32.2228, -110.9145], type: 'Regional Hospital'},
+        {name: 'University of New Mexico Hospital', coords: [35.1264, -106.6034], type: 'Regional Hospital'},
+        {name: 'Texas Medical Center - Houston', coords: [29.7589, -95.3677], type: 'Major Hospital'},
+        {name: 'Mayo Clinic Arizona', coords: [33.4484, -111.7298], type: 'Major Hospital'},
+        
+        // West
+        {name: 'UCSF Medical Center', coords: [37.7628, -122.4580], type: 'Major Hospital'},
+        {name: 'UCLA Medical Center', coords: [34.0637, -118.4481], type: 'Major Hospital'},
+        {name: 'Cedars-Sinai Medical Center', coords: [34.0720, -118.3596], type: 'Major Hospital'},
+        {name: 'Stanford Health', coords: [37.4419, -122.1430], type: 'Major Hospital'},
+        {name: 'University of Washington Medical Center', coords: [47.6553, -122.3035], type: 'Major Hospital'},
+        {name: 'Oregon Health & Science University', coords: [45.5089, -122.6874], type: 'Regional Hospital'},
+        {name: 'University of Colorado Hospital', coords: [40.2368, -104.8449], type: 'Regional Hospital'},
+        {name: 'University of Utah Hospital', coords: [40.7469, -111.8060], type: 'Regional Hospital'}
+      ];
+
+      // Add markers to map
+      hospitals.forEach(hospital => {
+        L.circleMarker(hospital.coords, {
+          radius: 6,
+          fillColor: '#d4a574',
+          color: '#8b5e3c',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.85
+        }).bindPopup(`<strong>${hospital.name}</strong><br><small>${hospital.type}</small>`).addTo(map);
+      });
+
+      // Custom cursor functionality
+      const big = document.querySelector('.big');
+      const small = document.querySelector('.small');
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let bigX = mouseX;
+      let bigY = mouseY;
+      let smallX = mouseX;
+      let smallY = mouseY;
+
+      const lerp = (start, end, amount) => start + (end - start) * amount;
+
+      document.addEventListener('mousemove', (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+      });
+
+      function animate() {
+        bigX = lerp(bigX, mouseX, 0.14);
+        bigY = lerp(bigY, mouseY, 0.14);
+        smallX = lerp(smallX, mouseX, 0.24);
+        smallY = lerp(smallY, mouseY, 0.24);
+
+        big.style.top = bigY + 'px';
+        big.style.left = bigX + 'px';
+        small.style.top = smallY + 'px';
+        small.style.left = smallX + 'px';
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      const links = document.querySelectorAll('a, button, [onclick]');
+      links.forEach((link) => {
+        link.addEventListener('mouseenter', () => {
+          big.classList.add('hover');
+          small.classList.add('hover');
+        });
+
+        link.addEventListener('mouseleave', () => {
+          big.classList.remove('hover');
+          small.classList.remove('hover');
+        });
+      });
+    </script>
+  </body>
+</html>
